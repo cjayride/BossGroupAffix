@@ -1,27 +1,23 @@
-# BossGroupAffix
+# Boss Affix By Players
 
-Picks a boss's Creature Level & Loot Control affix from how many players are near it.
+Before a boss takes damage, sets its **Creature Level & Loot Control** affix from how many living players are nearby. You pick the solo affix and the group affix in config (Mending, Reflective, Summoner, Sturdy, or any other CL&LC boss affix except Twin/Godlike).
 
-- One player nearby: the boss gets **Mending** (heals over time).
-- Two or more players nearby: the boss gets **Summoner** (calls in adds).
-
-The choice updates every 2 seconds while the boss is at full health. Once the boss takes damage, the affix is locked for the rest of the fight.
-
-Twin and Godlike bosses are left alone.
+Rechecks every 2 seconds at full health; locks when the boss takes damage.
 
 ## Configuration
 
-`cjayride.bossgroupaffix.cfg`
+`BepInEx/config/cjayride.bossgroupaffix.cfg`
 
 | Setting | Default | Description |
 |---|---|---|
 | Enabled | true | Turn the mod on or off. |
-| SoloAffix | Mending | Affix for a boss with one player nearby. |
-| GroupAffix | Summoner | Affix for a boss with two or more players nearby. |
-| PlayerRange | 400 | Meters from the boss. Players this close count. |
+| SoloAffix | Reflective | One player in PlayerRange. |
+| GroupAffix | Summoner | Two or more players in range. |
+| PlayerRange | 180 | Meters from the boss. |
+| MinPlayersToDamage | 2 | Boss ignores damage if fewer players are in range (0 = off). |
 
-Affix choices: None, Reflective, Shielded, Mending, Summoner, Elementalist, Enraged, Sturdy.
+Choices: `None`, `Reflective`, `Shielded`, `Mending`, `Summoner`, `Elementalist`, `Enraged`, `Sturdy`.
 
-Mending strength comes from Creature Level & Loot Control's `Mending healing factor` setting. The default of 1 heals noticeably; very low values like 0.05 barely heal.
+Strength of each affix is tuned in CL&LC's config, not here.
 
 Install on the server and all clients.

@@ -1,27 +1,27 @@
-# BossGroupAffix
+# Boss Affix By Players
 
-Picks a boss's Creature Level & Loot Control affix from how many players are near it.
+Thunderstore package name: **BossAffixByPlayers** (assembly: `Cjayride.BossGroupAffix`).
 
-- One player nearby: the boss gets **Mending** (heals over time).
-- Two or more players nearby: the boss gets **Summoner** (calls in adds).
+Before a boss takes damage, this mod sets its **Creature Level & Loot Control** affix from how many living players are within range. You choose **any** CL&LC boss affix for solo and for group in config. Twin and Godlike bosses are left alone.
 
-The choice updates every 2 seconds while the boss is at full health. Once the boss takes damage, the affix is locked for the rest of the fight.
-
-Twin and Godlike bosses are left alone.
+The affix is rechecked every 2 seconds while the boss is at full health, then locked for the rest of the fight once it has taken damage.
 
 ## Configuration
 
-`cjayride.bossgroupaffix.cfg`
+**`BepInEx/config/cjayride.bossgroupaffix.cfg`**
+
+The plugin writes this file on first run (defaults: Reflective solo, Summoner group, 180 m range).
 
 | Setting | Default | Description |
 |---|---|---|
 | Enabled | true | Turn the mod on or off. |
-| SoloAffix | Mending | Affix for a boss with one player nearby. |
-| GroupAffix | Summoner | Affix for a boss with two or more players nearby. |
-| PlayerRange | 400 | Meters from the boss. Players this close count. |
+| SoloAffix | Reflective | Affix when one player is in range. |
+| GroupAffix | Summoner | Affix when two or more players are in range. |
+| PlayerRange | 180 | Meters from the boss. |
+| MinPlayersToDamage | 2 | Boss ignores damage if fewer living players are in range (0 = off). |
 
-Affix choices: None, Reflective, Shielded, Mending, Summoner, Elementalist, Enraged, Sturdy.
+**SoloAffix / GroupAffix:** `None`, `Reflective`, `Shielded`, `Mending`, `Summoner`, `Elementalist`, `Enraged`, `Sturdy`.
 
-Mending strength comes from Creature Level & Loot Control's `Mending healing factor` setting. The default of 1 heals noticeably; very low values like 0.05 barely heal.
+Affix power (Mending heal rate, Reflective damage, Summoner count, etc.) comes from **Creature Level & Loot Control**'s boss affix settings.
 
-Install on the server and all clients.
+Install on the **server and all clients**.

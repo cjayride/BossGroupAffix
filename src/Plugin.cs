@@ -7,12 +7,12 @@ using HarmonyLib;
 namespace Cjayride.BossGroupAffix
 {
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
-    [BepInDependency(CllcGuid)]
+    [BepInDependency(CllcGuid, BepInDependency.DependencyFlags.SoftDependency)]
     public class Plugin : BaseUnityPlugin
     {
         public const string PluginGUID = "cjayride.bossgroupaffix";
-        public const string PluginName = "BossGroupAffix";
-        public const string PluginVersion = "1.0.1";
+        public const string PluginName = "Boss Affix By Players";
+        public const string PluginVersion = "1.0.3";
         internal const string CllcGuid = "org.bepinex.plugins.creaturelevelcontrol";
 
         internal static Plugin Instance;
@@ -20,6 +20,7 @@ namespace Cjayride.BossGroupAffix
         internal static ConfigEntry<string> SoloAffix;
         internal static ConfigEntry<string> GroupAffix;
         internal static ConfigEntry<float> PlayerRange;
+        internal static ConfigEntry<int> MinPlayersToDamage;
 
         internal static BepInEx.Logging.ManualLogSource Log => Instance.Logger;
 
@@ -28,21 +29,40 @@ namespace Cjayride.BossGroupAffix
             Instance = this;
             Enabled = Config.Bind("General", "Enabled", true,
                 "Pick the boss affix from how many players are near the boss before the fight starts.");
-            SoloAffix = Config.Bind("General", "SoloAffix", "Mending",
-                "Creature Level & Loot Control affix for a boss with one player nearby. " +
+            SoloAffix = Config.Bind("General", "SoloAffix", "Reflective",
+                "Creature Level & Loot Control affix when one living player is in range. " +
                 "One of: None, Reflective, Shielded, Mending, Summoner, Elementalist, Enraged, Sturdy.");
             GroupAffix = Config.Bind("General", "GroupAffix", "Summoner",
-                "Affix for a boss with two or more players nearby. Same choices as SoloAffix.");
-            PlayerRange = Config.Bind("General", "PlayerRange", 400f,
-                "Meters from the boss. Players this close count toward solo or group.");
+                "Affix when two or more living players are in range. Same choices as SoloAffix.");
+            PlayerRange = Config.Bind("General", "PlayerRange", 180f,
+                "Meters from the boss. Living players in this radius are counted every 2s while the boss is at full health, until the first hit locks the affix.");
+            MinPlayersToDamage = Config.Bind("General", "MinPlayersToDamage", 2,
+                new ConfigDescription(
+                    "Bosses ignore damage unless at least this many living players are within PlayerRange. 0 disables the gate.",
+                    new AcceptableValueRange<int>(0, 10)));
+
+            WarnIfAffixInvalid(SoloAffix);
+            WarnIfAffixInvalid(GroupAffix);
+            Config.Save();
+            Logger.LogInfo($"{PluginName} {PluginVersion} loaded. Config: {Config.ConfigFilePath}");
+
+            new Harmony(PluginGUID).PatchAll(Assembly.GetExecutingAssembly());
 
             if (!Cllc.Init())
             {
-                Logger.LogWarning("BossGroupAffix: Creature Level & Loot Control API not found; boss affixes are left alone.");
+                Logger.LogWarning(
+                    "Creature Level & Loot Control API not found; affix swapping is disabled until CL&LC is installed.");
+            }
+        }
+
+        private static void WarnIfAffixInvalid(ConfigEntry<string> entry)
+        {
+            if (entry == null || Cllc.IsValid(entry.Value))
+            {
                 return;
             }
 
-            new Harmony(PluginGUID).PatchAll(Assembly.GetExecutingAssembly());
+            Log.LogWarning($"Config {entry.Definition.Section}/{entry.Definition.Key} = \"{entry.Value}\" is not a valid CL&LC boss affix.");
         }
     }
 
@@ -51,6 +71,8 @@ namespace Cjayride.BossGroupAffix
         static Type _affixType;
         static MethodInfo _get;
         static MethodInfo _set;
+
+        internal static bool Ready => _get != null && _set != null;
 
         internal static bool Init()
         {
@@ -78,6 +100,11 @@ namespace Cjayride.BossGroupAffix
 
         internal static bool IsValid(string affix)
         {
+            if (_affixType == null)
+            {
+                return !string.IsNullOrEmpty(affix) && affix != "Twin" && affix != "Godlike";
+            }
+
             if (string.IsNullOrEmpty(affix) || affix == "Twin" || affix == "Godlike")
             {
                 return false;

@@ -12,7 +12,7 @@ namespace Cjayride.BossGroupAffix
     {
         public const string PluginGUID = "cjayride.bossgroupaffix";
         public const string PluginName = "BossGroupAffix";
-        public const string PluginVersion = "1.0.0";
+        public const string PluginVersion = "1.0.1";
         internal const string CllcGuid = "org.bepinex.plugins.creaturelevelcontrol";
 
         internal static Plugin Instance;

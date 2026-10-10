@@ -1,6 +1,6 @@
 {
     "name": "BossGroupAffix",
-    "version_number": "1.0.0",
+    "version_number": "1.0.1",
     "website_url": "https://github.com/cjayride/BossGroupAffix",
     "description": "Creature Level & Loot Control bosses get Mending when fought solo and Summoner when fought as a group.",
     "dependencies": [

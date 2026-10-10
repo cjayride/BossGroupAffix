@@ -1,0 +1,10 @@
+{
+    "name": "BossGroupAffix",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/cjayride/BossGroupAffix",
+    "description": "Creature Level & Loot Control bosses get Mending when fought solo and Summoner when fought as a group.",
+    "dependencies": [
+        "denikson-BepInExPack_Valheim-5.4.2350",
+        "Smoothbrain-CreatureLevelAndLootControl-5.0.6"
+    ]
+}

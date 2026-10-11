@@ -1,6 +1,6 @@
 # Thunderstore zip: DLL + manifest + docs (config is created on first run only).
 param(
-    [string] $Version = "1.0.3"
+    [string] $Version = "1.0.4"
 )
 
 $ErrorActionPreference = "Stop"

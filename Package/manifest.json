@@ -1,8 +1,8 @@
 {
     "name": "BossAffixByPlayers",
-    "version_number": "1.0.3",
+    "version_number": "1.0.4",
     "website_url": "https://github.com/cjayride/BossGroupAffix",
-    "description": "Sets each CL&LC boss affix from player count before the fight: configurable SoloAffix (one player nearby) and GroupAffix (two or more). Twin and Godlike bosses are unchanged.",
+    "description": "Boss fights can require a minimum number of players within range before the boss takes damage, with a HUD message when blocked. Optional CL&LC affix swap by player count (off by default).",
     "dependencies": [
         "denikson-BepInExPack_Valheim-5.4.2350",
         "Smoothbrain-CreatureLevelAndLootControl-5.0.6"

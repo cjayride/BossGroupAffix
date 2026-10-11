@@ -8,7 +8,8 @@ namespace Cjayride.BossGroupAffix
     {
         private static void Postfix(Character __instance)
         {
-            if (__instance && __instance.IsBoss() && !__instance.GetComponent<AffixWatcher>())
+            if (__instance && __instance.IsBoss() && Plugin.SwapAffixByPlayerCount?.Value == true
+                && Cllc.Ready && !__instance.GetComponent<AffixWatcher>())
             {
                 __instance.gameObject.AddComponent<AffixWatcher>();
             }
@@ -42,8 +43,8 @@ namespace Cjayride.BossGroupAffix
 
         private void Check()
         {
-            if (!Cllc.Ready || !Plugin.Enabled.Value || !_boss || _boss.IsDead() || !_boss.m_nview || !_boss.m_nview.IsValid()
-                || !_boss.m_nview.IsOwner())
+            if (!Plugin.SwapAffixByPlayerCount.Value || !Cllc.Ready || !Plugin.Enabled.Value || !_boss || _boss.IsDead()
+                || !_boss.m_nview || !_boss.m_nview.IsValid() || !_boss.m_nview.IsOwner())
             {
                 return;
             }

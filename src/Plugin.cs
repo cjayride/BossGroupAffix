@@ -12,15 +12,18 @@ namespace Cjayride.BossGroupAffix
     {
         public const string PluginGUID = "cjayride.bossgroupaffix";
         public const string PluginName = "Boss Affix By Players";
-        public const string PluginVersion = "1.0.3";
+        public const string PluginVersion = "1.0.4";
         internal const string CllcGuid = "org.bepinex.plugins.creaturelevelcontrol";
 
         internal static Plugin Instance;
         internal static ConfigEntry<bool> Enabled;
+        internal static ConfigEntry<bool> SwapAffixByPlayerCount;
         internal static ConfigEntry<string> SoloAffix;
         internal static ConfigEntry<string> GroupAffix;
         internal static ConfigEntry<float> PlayerRange;
-        internal static ConfigEntry<int> MinPlayersToDamage;
+        internal static ConfigEntry<int> MinPlayersToStartFight;
+        internal static ConfigEntry<string> FightBlockedMessage;
+        internal static ConfigEntry<float> MessageCooldownSeconds;
 
         internal static BepInEx.Logging.ManualLogSource Log => Instance.Logger;
 
@@ -28,18 +31,27 @@ namespace Cjayride.BossGroupAffix
         {
             Instance = this;
             Enabled = Config.Bind("General", "Enabled", true,
-                "Pick the boss affix from how many players are near the boss before the fight starts.");
-            SoloAffix = Config.Bind("General", "SoloAffix", "Reflective",
-                "Creature Level & Loot Control affix when one living player is in range. " +
+                "When true, MinPlayersToStartFight and optional affix swapping are active.");
+            SwapAffixByPlayerCount = Config.Bind("General", "SwapAffixByPlayerCount", false,
+                "When true, CL&LC boss affix is chosen from nearby player count (solo vs group). When false, affix swapping is off.");
+            SoloAffix = Config.Bind("Affix swap", "SoloAffix", "Reflective",
+                "Used only when SwapAffixByPlayerCount is true and one living player is in range. " +
                 "One of: None, Reflective, Shielded, Mending, Summoner, Elementalist, Enraged, Sturdy.");
-            GroupAffix = Config.Bind("General", "GroupAffix", "Summoner",
-                "Affix when two or more living players are in range. Same choices as SoloAffix.");
+            GroupAffix = Config.Bind("Affix swap", "GroupAffix", "Summoner",
+                "Used only when SwapAffixByPlayerCount is true and two or more living players are in range.");
             PlayerRange = Config.Bind("General", "PlayerRange", 180f,
-                "Meters from the boss. Living players in this radius are counted every 2s while the boss is at full health, until the first hit locks the affix.");
-            MinPlayersToDamage = Config.Bind("General", "MinPlayersToDamage", 2,
+                "Meters from the boss. Living players inside this radius count toward starting the fight and toward affix swap.");
+            MinPlayersToStartFight = Config.Bind("General", "MinPlayersToStartFight", 2,
                 new ConfigDescription(
-                    "Bosses ignore damage unless at least this many living players are within PlayerRange. 0 disables the gate.",
+                    "Offering a boss summon requires at least this many living players within PlayerRange of the spawn point. 0 disables the check.",
                     new AcceptableValueRange<int>(0, 10)));
+            FightBlockedMessage = Config.Bind("General", "FightBlockedMessage",
+                "Need at least {0} players within {1}m of the boss spawn to summon ({2} nearby).",
+                "HUD text when a summon is blocked. {0} = required count, {1} = PlayerRange, {2} = current count.");
+            MessageCooldownSeconds = Config.Bind("General", "MessageCooldownSeconds", 3f,
+                new ConfigDescription(
+                    "Minimum seconds between fight-blocked messages for the local player.",
+                    new AcceptableValueRange<float>(0.5f, 30f)));
 
             WarnIfAffixInvalid(SoloAffix);
             WarnIfAffixInvalid(GroupAffix);

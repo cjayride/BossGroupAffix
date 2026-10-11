@@ -1,23 +1,11 @@
 # Boss Affix By Players
 
-Before a boss takes damage, sets its **Creature Level & Loot Control** affix from how many living players are nearby. You pick the solo affix and the group affix in config (Mending, Reflective, Summoner, Sturdy, or any other CL&LC boss affix except Twin/Godlike).
+Requires **Creature Level & Loot Control** only if you enable affix swapping.
 
-Rechecks every 2 seconds at full health; locks when the boss takes damage.
+By default, **boss summons are blocked** until **2** living players are within **180 m** of the spawn point. Trophies are not used. The local player sees a **center HUD message** if the check fails.
 
-## Configuration
+**SwapAffixByPlayerCount** defaults to **false** so this mod does not change CL&LC affixes unless you turn swap on.
 
-`BepInEx/config/cjayride.bossgroupaffix.cfg`
-
-| Setting | Default | Description |
-|---|---|---|
-| Enabled | true | Turn the mod on or off. |
-| SoloAffix | Reflective | One player in PlayerRange. |
-| GroupAffix | Summoner | Two or more players in range. |
-| PlayerRange | 180 | Meters from the boss. |
-| MinPlayersToDamage | 2 | Boss ignores damage if fewer players are in range (0 = off). |
-
-Choices: `None`, `Reflective`, `Shielded`, `Mending`, `Summoner`, `Elementalist`, `Enraged`, `Sturdy`.
-
-Strength of each affix is tuned in CL&LC's config, not here.
+Config: `BepInEx/config/cjayride.bossgroupaffix.cfg`
 
 Install on the server and all clients.

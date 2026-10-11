@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.4
+
+- **MinPlayersToStartFight** (default 2): boss **summon** (OfferingBowl) is blocked until enough living players are within **PlayerRange** of the spawn point; trophies are not consumed; local player gets a throttled center HUD message.
+- **SwapAffixByPlayerCount** (default **false**): optional CL&LC solo/group affix swap; when off, this mod does not change affixes.
+
 ## 1.0.3
 
 - **MinPlayersToDamage** (default 2): bosses take no damage unless that many living players are within PlayerRange. Stops solo chip and group cleanup after a solo-tagged fight.

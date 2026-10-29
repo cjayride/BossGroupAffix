@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.5
+
+- Verified against Valheim 1.0.21 (Release build).
+- BepInEx dependency set to `denikson-BepInExPack_Valheim-5.4.2360`.
+
 ## 1.0.4
 
 - **MinPlayersToStartFight** (default 2): boss **summon** (OfferingBowl) is blocked until enough living players are within **PlayerRange** of the spawn point; trophies are not consumed; local player gets a throttled center HUD message.

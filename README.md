@@ -1,30 +1,63 @@
 # Boss Affix By Players
 
-Thunderstore package name: **BossAffixByPlayers** (assembly: `Cjayride.BossGroupAffix`).
+Control when bosses can be summoned and optionally adjust their Creature Level and Loot Control (CL&LC) affixes based on the number of nearby players.
 
-## Boss summon gate (main feature)
+**Thunderstore Package:** `BossAffixByPlayers`  
+**Assembly:** `Cjayride.BossGroupAffix`
 
-By default, a boss **cannot be summoned** from an offering stone until at least **`MinPlayersToStartFight`** living players (default **2**) are within **`PlayerRange`** (default **180 m**) of the **boss spawn point**. The offering is **not consumed**. You get a **center-screen message** if the check fails (throttled, configurable text).
+## Features
 
-Set **`MinPlayersToStartFight = 0`** to turn the gate off.
+### Boss Summon Requirements
 
-## Optional affix swap (off by default)
+By default, bosses cannot be summoned until enough living players are within range of the boss's spawn point.
 
-If **`SwapAffixByPlayerCount = true`**, the mod sets CL&LC affix from nearby player count while the boss is at full health, then locks on first damage. **`SwapAffixByPlayerCount = false`** (default): this mod never changes boss affixes.
+- **Minimum Players:** 2 living players by default.
+- **Player Range:** 180 meters from the boss spawn point.
+- **Offering Protection:** Summoning items are not consumed when the requirements are not met.
+- **HUD Notification:** Displays a center-screen message when a summon is blocked.
+- **Configurable Messages:** Customize the notification text and cooldown.
+
+Set `MinPlayersToStartFight = 0` to disable the summon requirement.
+
+### Optional Solo/Group Affix Switching
+
+The mod can optionally change a boss's CL&LC affix based on the number of nearby players.
+
+When enabled with `SwapAffixByPlayerCount = true`:
+
+- Applies the configured solo or group affix based on nearby player count.
+- Updates the affix while the boss is at full health.
+- Locks the affix when the boss first takes damage.
+
+**Disabled by default.** When `SwapAffixByPlayerCount = false`, this mod does not modify boss affixes.
 
 ## Configuration
 
-**`BepInEx/config/cjayride.bossgroupaffix.cfg`**
+Config file:
+
+`BepInEx/config/cjayride.bossgroupaffix.cfg`
 
 | Setting | Default | Description |
 |---|---|---|
-| Enabled | true | Master switch. |
-| MinPlayersToStartFight | 2 | Required living players in range to damage the boss (0 = off). |
-| PlayerRange | 180 | Meters from the boss. |
-| FightBlockedMessage | (see cfg) | HUD text; `{0}` required, `{1}` range, `{2}` current count. |
-| MessageCooldownSeconds | 3 | Throttle for the message. |
-| SwapAffixByPlayerCount | false | Enable solo/group CL&LC affix swap. |
+| `Enabled` | `true` | Enables or disables the mod. |
+| `MinPlayersToStartFight` | `2` | Minimum living players required within range to summon a boss. Set to `0` to disable the requirement. |
+| `PlayerRange` | `180` | Distance in meters used to check nearby players. |
+| `FightBlockedMessage` | See config file | HUD notification shown when a summon is blocked. Supports `{0}` for the required player count, `{1}` for the range, and `{2}` for the current player count. |
+| `MessageCooldownSeconds` | `3` | Minimum time between repeated notifications. |
+| `SwapAffixByPlayerCount` | `false` | Enables optional solo/group CL&LC affix switching. |
 
-**[Affix swap]** (only if swap enabled): SoloAffix, GroupAffix.
+### Affix Configuration
 
-Install on the **server and all clients**.
+These settings apply only when `SwapAffixByPlayerCount = true`:
+
+- `SoloAffix` — Affix used when fighting solo.
+- `GroupAffix` — Affix used when fighting with a group.
+
+## Installation
+
+Install **Boss Affix By Players** on the **server and all clients**.
+
+## Compatibility
+
+- Verified against Valheim 1.0.21. BepInEx dependency: `denikson-BepInExPack_Valheim-5.4.2360`.
+

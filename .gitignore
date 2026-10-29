@@ -4,3 +4,6 @@ Environment.props
 *.user
 .vs/
 Package/*.zip
+dist/package/
+dist/*.zip
+dist/icon.png
